@@ -1,0 +1,44 @@
+★★已完成张阳大神的版本现在进行修改完善，采用更加面向对象编程的思想去编程，张大神的技术功底是非常深厚的，因此需要紧跟大神步伐，勇往直前。
+此版本实现了自定义的MyBatis：2018年4月8日
+与老师讲解的版本不同之处有如下几点：
+1.此版本将主配置文件解析的内容封装到一个Configuration中，更加面向对象的思想去编程，教师版本是散乱的几个变量
+2.此版本将配置信息对象Configuration的解析步骤放在了DefaultSqlSession中，在DefaultSqlSessionFactory中进行单纯提供了一个方法ParseXMLToSession(session)
+只是进行Configuration注入数据，最后将数据
+		注入到session中，在DefaultSqlSession中进行处理configuration，对其进行解析，并依据数据进行选择不同的逻辑进行处理即可。
+3.此版本将动态代理的处理器不再单纯抽取处理一个实现类，而是将使用匿名内部类的方式进行处理，包括处理结果集等都是在匿名内部类中的方法
+
+注意说明：此版本遇到一个问题就是关于Dom4J解析XML时候会连接超时，经过百度知晓
+		SAXReader  reader = new SAXReader();
+		//需要追加的代码
+		reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		reader.read(inputStream);	//此处会抛出连接超时的异常，解决方案就是：在reader.read(inputStream);之前进行设置不让其联网校验
+		
+另外一个需要注意的地方就是：在处理结果集上，需要拿到元素据，结果集是一个集合，我们每次遍历一次就会拿到一条记录，
+每条记录就会有对应的元素据，对应的我们可以根据元数据进行获取该条记录的总列数即总字段数count，
+然后我们通过起始索引1到最大索引count（即上述的count），循环，分别在结果集中（重点），根据索引获取到对应的列字段（String），并根据上述字段获取对应的值（Object）
+然后该字段就是一个model的一个属性对应，因此我们使用一个属性描述器进行处理PropertyDescriptor（propertyName,ModelClass）   利用此属性描述器可以获取一个写方法即set方法
+然后将利用上述的写方法进行反射调用，将属性值注入到model中即可。每一次反射注入一个属性值，每一次（索引和总列数的）循环，都对应的是一条记录，即对应一个model对象
+在上述的循环之外将数据封装到list集合中即可。
+
+///////////////////////////////////////////////////////////////////////////
+
+开始时间：2018年4月9日13点55分
+在version01版本的基础之上进行实现注解的方式实现
+已经完成注解版本功能的实现补充。
+结束时间：2018年4月9日14点48分
+
+
+只要思路清晰一切不是问题。Just Enjoy Coding
+////////////////////////////////////////////////////////////////////////////
+
+关于泛型术语的补充加强
+以ArrayList<E>为例：
+<>念着typeof
+ArrayList<E>中的E称为类型参数变量，其实就是类型的占位符（传入什么类型就是什么类型）
+ArrayList<Integer>中的Integer称为实际类型参数
+整个称为ArrayList<E>泛型类型
+整个ArrayList<Integer>称为参数化的类型ParameterizedType
+Set<String>
+Enumeration<String>
+Map<String,Object>
+Map<K,V>

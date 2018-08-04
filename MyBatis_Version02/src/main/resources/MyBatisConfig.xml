@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration  
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  <!-- 该文件为MyBatis的主配置文件 -->
+  <configuration>
+  <environments default="WP">
+  <environment id="WP">
+  <transactionManager type="JDBC"></transactionManager>
+  <dataSource type="POOLED">
+  <property name="driver" value="com.mysql.jdbc.Driver"/>
+  <property name="url" value="jdbc:mysql://localhost:3306/ee39"/>
+  <property name="username" value="root"/>
+  <property name="password" value="root"/>
+  </dataSource>
+  </environment>
+  </environments>
+  <mappers>
+  <!-- 此处resource表示是用XML配置 ，class表示利用注解-->
+  <!-- 此处可以填写多个mapper -->
+  <mapper resource="com/zzu/dao/UserDao.xml"/>
+  <!-- 注解类型的配置 -->
+  <mapper class="com.zzu.dao.UserDao"/>
+  </mappers>
+  </configuration>
